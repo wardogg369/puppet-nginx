@@ -24,3 +24,4 @@ class nginx(
   ~> class { '::nginx::service': }
 
 }
+

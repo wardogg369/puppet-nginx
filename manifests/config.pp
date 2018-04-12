@@ -1,7 +1,7 @@
 class nginx::config(
   String $ensure                = $::nginx::config_ensure,
   String $config_dir            = $::nginx::config_dir,
-  String $mode                  = $::nginc::config_mode,
+  String $mode                  = $::nginx::config_mode,
   String $owner                 = $::nginx::config_owner,
   String $group                 = $::nginx::config_group,
   String $confd                 = $::nginx::config_confd,
@@ -9,9 +9,9 @@ class nginx::config(
   String $pid_file              = $::nginx::config_pid_file,
   Optional[String] $vdir_enable = $::nginx::config_vdir_enable,
   String $process_user          = $::nginx::config_process_user,
-  String $docroot               = $::nginx::docroot, 
+  String $docroot               = $::nginx::docroot,
 ) {
-  file { 'nginx_conf': 
+  file { 'nginx.conf': 
     ensure => $ensure,
     path   => "${config_dir}/nginx.conf",
     mode   => $mode,
@@ -19,16 +19,17 @@ class nginx::config(
     group  => $group,
     content => template("${module_name}/conf.d/nginx.conf.erb"),
   }
-  
+
   file { $log_dir:
     ensure  => directory,
-    recures => true,
+    recurse => true,
   }
-  file { $docroot:
+  
+  file { $docroot: 
     ensure  => directory,
-    recures => true,
-    mode   => $mode,
-    owner  => $owner,
-    group  => $group,
+    recurse => true,
+    owner   => $owner,
+    group   => $group,
+    mode    => '0775',
   }
 }
